@@ -3,8 +3,7 @@
 Guárdalo como `productos.csv`
 
 ```
-csv
-CopyEdit
+
 id_producto,nombre,descripcion,precio,stock
 1,Camiseta Azul,Camiseta 100% algodón,15.99,50
 2,Pantalón Negro,Pantalón de mezclilla,29.99,30
@@ -26,8 +25,7 @@ Guárdalo como `productos.txt` (formato delimitado por tabulaciones o punto y co
 ### Formato con tabulaciones:
 
 ```
-matlab
-CopyEdit
+
 id_producto	nombre	descripcion	precio	stock
 1	Camiseta Azul	Camiseta 100% algodón	15.99	50
 2	Pantalón Negro	Pantalón de mezclilla	29.99	30
@@ -38,8 +36,7 @@ id_producto	nombre	descripcion	precio	stock
 ### Formato con punto y coma:
 
 ```
-matlab
-CopyEdit
+
 id_producto;nombre;descripcion;precio;stock
 1;Camiseta Azul;Camiseta 100% algodón;15.99;50
 2;Pantalón Negro;Pantalón de mezclilla;29.99;30
