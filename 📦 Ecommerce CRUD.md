@@ -18,8 +18,7 @@ La base de datos se ejecuta en un contenedor **MySQL 8.0** usando Docker.
 ## 📂 Estructura del proyecto
 
 ```
-go
-CopyEdit
+
 ecommerce-crud/
 │
 ├── backend/
