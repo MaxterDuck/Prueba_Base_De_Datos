@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
@@ -11,6 +12,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Verificar la conexión de la base de datos antes de continuar
+db.query('SELECT 1', (err) => {
+    if (err) {
+        console.error('❌ No se pudo conectar a la base de datos', err);
+    } else {
+        console.log('✅ Conexión a la base de datos exitosa');
+    }
+});
+
 // Servir archivos del frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
 
@@ -19,7 +29,10 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 // GET todos los productos
 app.get('/productos', (req, res) => {
     db.query('SELECT * FROM productos', (err, results) => {
-        if (err) return res.status(500).json({ error: 'Error al obtener productos' });
+        if (err) {
+            console.error('❌ Error al obtener productos:', err);
+            return res.status(500).json({ error: 'Error al obtener productos' });
+        }
         res.json(results);
     });
 });
@@ -35,12 +48,16 @@ app.get('/productos/:id', (req, res) => {
 
 // POST nuevo producto
 app.post('/productos', (req, res) => {
+    console.log('📥 POST recibido:', req.body);  // <-- Log útil para depurar
     const { nombre, descripcion, precio, stock } = req.body;
     db.query(
         'INSERT INTO productos (nombre, descripcion, precio, stock) VALUES (?, ?, ?, ?)',
         [nombre, descripcion, precio, stock],
         (err, result) => {
-            if (err) return res.status(500).json({ error: 'Error creando producto' });
+            if (err) {
+                console.error('❌ Error creando producto:', err);
+                return res.status(500).json({ error: 'Error creando producto' });
+            }
             res.json({ id: result.insertId, ...req.body });
         }
     );
