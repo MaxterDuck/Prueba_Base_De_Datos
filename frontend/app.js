@@ -10,10 +10,17 @@ const btnCancelar = document.getElementById('btnCancelar');
 const formCSV = document.getElementById('formCSV');
 const mensajeCarga = document.getElementById('mensajeCarga');
 
+// Función para cargar los productos
 function cargarProductos() {
     fetch('/productos')
         .then(res => res.json())
         .then(data => {
+            if (!Array.isArray(data)) {
+                console.error('❌ Respuesta inesperada del servidor:', data);
+                contenedor.innerHTML = '<p style="color:red;">❌ Error al cargar productos.</p>';
+                return;
+            }
+
             contenedor.innerHTML = '';
             data.forEach(producto => {
                 const div = document.createElement('div');
@@ -28,9 +35,14 @@ function cargarProductos() {
                 `;
                 contenedor.appendChild(div);
             });
+        })
+        .catch(err => {
+            console.error('❌ Error al obtener productos:', err);
+            contenedor.innerHTML = '<p style="color:red;">❌ Error al obtener productos.</p>';
         });
 }
 
+// Manejo de formulario de productos (Agregar o Editar)
 form.addEventListener('submit', e => {
     e.preventDefault();
     const id = inputId.value;
@@ -50,7 +62,7 @@ form.addEventListener('submit', e => {
         body: JSON.stringify(producto)
     })
     .then(res => {
-        if (!res.ok) throw new Error('Error en la operación');
+        if (!res.ok) throw new Error('❌ Error en la operación');
         return res.json();
     })
     .then(() => {
@@ -60,8 +72,10 @@ form.addEventListener('submit', e => {
     .catch(err => alert(err.message));
 });
 
+// Función para cancelar y limpiar el formulario
 btnCancelar.addEventListener('click', limpiarFormulario);
 
+// Función para editar un producto
 function editarProducto(id) {
     fetch(`/productos/${id}`)
         .then(res => res.json())
@@ -72,20 +86,26 @@ function editarProducto(id) {
             inputPrecio.value = producto.precio;
             inputStock.value = producto.stock;
             btnCancelar.style.display = 'inline';
+        })
+        .catch(err => {
+            console.error('❌ Error al obtener producto para editar:', err);
+            alert('❌ Error al cargar el producto.');
         });
 }
 
+// Función para eliminar un producto
 function eliminarProducto(id) {
     if (confirm('¿Seguro que quieres eliminar este producto?')) {
         fetch(`/productos/${id}`, { method: 'DELETE' })
             .then(res => {
-                if (!res.ok) throw new Error('Error eliminando producto');
+                if (!res.ok) throw new Error('❌ Error eliminando producto');
                 cargarProductos();
             })
             .catch(err => alert(err.message));
     }
 }
 
+// Función para limpiar el formulario
 function limpiarFormulario() {
     inputId.value = '';
     inputNombre.value = '';
@@ -119,7 +139,7 @@ formCSV.addEventListener('submit', e => {
         } else {
             mensajeCarga.innerText = '✅ ' + data.mensaje;
             mensajeCarga.style.color = 'green';
-            cargarProductos();  // refrescar la lista
+            cargarProductos();  // Refrescar la lista de productos
             formCSV.reset();
         }
     })
@@ -129,4 +149,5 @@ formCSV.addEventListener('submit', e => {
     });
 });
 
+// Cargar productos al inicio
 cargarProductos();
