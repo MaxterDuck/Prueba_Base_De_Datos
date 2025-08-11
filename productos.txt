@@ -1,0 +1,12 @@
+nombre,descripcion,precio,stock
+Camiseta,Una camiseta de algodón,19.99,50
+Pantalón,Jeans de corte moderno,39.99,30
+Zapatillas,Deportivas para correr,49.99,20
+Gorra,Con logo bordado,14.99,100
+Chaqueta,Chaqueta impermeable,59.99,25
+Reloj,Reloj de pulsera,29.99,15
+Mochila,De tela resistente,24.99,40
+Auriculares,Con cancelación de ruido,89.99,10
+Lentes de sol,Lentes UV,15.99,60
+Taza,De cerámica para café,8.99,200
+
